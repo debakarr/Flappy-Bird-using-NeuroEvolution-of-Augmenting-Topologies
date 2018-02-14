@@ -6,7 +6,7 @@ from Bird import Bird
 from Pipe import Pipe
 import random
 
-framesPerSecond = 40 # Set framesPerSecond of the game
+framesPerSecond = 5 # Set framesPerSecond of the game
 surfaceWidth  = 286 # width of the screen
 surfaceHeight = 509 # height of the screen
 score = 0 # Initial score
@@ -14,7 +14,7 @@ background = pygame.image.load('img/day.png') # Background image
 # gameover = 0
 
 # If game over
-def gameOver():
+def gameOver(surface, clock):
 	# set global score to 0
 	global score, background
 	score = 0
@@ -23,17 +23,13 @@ def gameOver():
 	background = pygame.image.load(random.choice(backgroundChoice)) # Background image
 
 	#display message 'Game Over!'
-	msgSurface('Game Over!')
+	msgSurface(surface, clock, 'Game Over!')
 
-def msgSurface(text):
+def msgSurface(surface, clock, text):
 	# Set font for game over message 
 	# (still using system font as I am facing some permission error and still need to figure out that how to get around of that permission)
 	smallText = pygame.font.SysFont(None, 30)
 	largeText = pygame.font.SysFont(None, 50)
-
-	# This part is also redundant, need to edit later
-	surface  = pygame.display.set_mode((surfaceWidth, surfaceHeight))
-	clock = pygame.time.Clock()
 
 	# makeTextObject is a function used to render text on screen
 	titleTextSurf, titleTextRect = makeTextObject(text, largeText)
@@ -57,7 +53,7 @@ def msgSurface(text):
 
 # Render text message
 def makeTextObject(text, font):
-	textSurface = font.render(text, True, (255, 255, 255))
+	textSurface = font.render(text, True, (255,0,0))
 	return textSurface, textSurface.get_rect()
 
 # Check whether user pressed any key
@@ -72,6 +68,22 @@ def replay_or_quit():
 
 	# keep on returning null and in msgSurface we are holding the frame
 	return None
+
+def topDisplay(surface, score, distance, birdCord, gapCord):
+	smallText = pygame.font.SysFont(None, 20)
+	score = smallText.render("Score: " + str(score), True, (255, 255, 255))
+	distance = smallText.render("Distance: " + str(distance), True, (255, 255, 255))
+	bCord = smallText.render("Bird Coord: " + str(birdCord[0]) + ", " + str(birdCord[1]), True, (255, 255, 255))
+	gCord = smallText.render("Gap Coord: " + str(gapCord[0]) + ", " + str(gapCord[1]), True, (255, 255, 255))
+	surface.blit(score, [0, 0])
+	surface.blit(distance, [0, 20])
+	surface.blit(bCord, [0, 40])
+	surface.blit(gCord, [0, 60])
+
+def calcFitness(score, distance, birdCord, gapCord):
+	fitness = score*2 + distance*0.01
+	return fitness
+
 
 def game():
 	# main game part
@@ -116,7 +128,7 @@ def game():
 			# if yes the it's game over
 			print("GAME OVER")
 			print("FINAL SCORE IS %d"%score)
-			gameOver()
+			gameOver(surface, clock)
 		
 		# else check for any event (eg. button pressed)
 		for event in pygame.event.get():
@@ -146,6 +158,12 @@ def game():
 				secondPipe.behindBird = 1
 				score += 1
 				print("SCORE IS %d"%score)
+
+		birdCord = [flappyBird.x, flappyBird.y]
+		closestPipe = pipe1Pos if (pipe1Pos[0]<pipe2Pos[0]) else pipe2Pos
+		gapCord = [closestPipe[0], ((closestPipe[1] + closestPipe[2])/2)]
+
+		topDisplay(surface, score, flappyBird.distance, birdCord, gapCord)
 		
 		
 

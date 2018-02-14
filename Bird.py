@@ -22,6 +22,7 @@ class Bird(pygame.sprite.Sprite):
         self.moveDownAcceleration = 1 # Deaccelaration
         self.moveUp = -9 # Acceleration upward
         self.isFlapped = False # Did the bird flapped?
+        self.distance = 0
 
         self.draw(self.x, self.y) # display bird
 
@@ -47,4 +48,5 @@ class Bird(pygame.sprite.Sprite):
         # calculate the location and redraw the bird
         self.y += min(self.normalSpeed, self.surfaceHeight - self.y - self.height)
         self.y = max(self.y,0)
+        self.distance += 1
         self.draw(self.x,self.y)
