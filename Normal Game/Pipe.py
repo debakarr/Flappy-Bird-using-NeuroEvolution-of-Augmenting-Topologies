@@ -24,9 +24,9 @@ class Pipe(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 
 		self.screen = screen
-		self.lowerBlock = PipeBlock('img/pipe.png',False)
-		self.upperBlock = PipeBlock('img/pipe.png',True)
-		self.gapBetweenPipes  = 160 # gaps between pipe
+		self.lowerBlock = PipeBlock('../img/pipe.png',False)
+		self.upperBlock = PipeBlock('../img/pipe.png',True)
+		self.gapBetweenPipes  = 100 # gaps between pipe
 		self.surfaceWidth = screen.get_width()
 
 		self.pipeWidth = self.upperBlock.rect.width

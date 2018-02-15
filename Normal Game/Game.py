@@ -5,12 +5,13 @@ import time
 from Bird import Bird
 from Pipe import Pipe
 import random
+import math
 
-framesPerSecond = 5 # Set framesPerSecond of the game
+framesPerSecond = 40 # Set framesPerSecond of the game
 surfaceWidth  = 286 # width of the screen
 surfaceHeight = 509 # height of the screen
 score = 0 # Initial score
-background = pygame.image.load('img/day.png') # Background image
+background = pygame.image.load('../img/day.png') # Background image
 # gameover = 0
 
 # If game over
@@ -19,7 +20,7 @@ def gameOver(surface, clock):
 	global score, background
 	score = 0
 
-	backgroundChoice = ['img/day.png', 'img/night.png']
+	backgroundChoice = ['../img/day.png', '../img/night.png']
 	background = pygame.image.load(random.choice(backgroundChoice)) # Background image
 
 	#display message 'Game Over!'
@@ -71,17 +72,28 @@ def replay_or_quit():
 
 def topDisplay(surface, score, distance, birdCord, gapCord):
 	smallText = pygame.font.SysFont(None, 20)
-	score = smallText.render("Score: " + str(score), True, (255, 255, 255))
-	distance = smallText.render("Distance: " + str(distance), True, (255, 255, 255))
+	scoreDisplay = smallText.render("Score: " + str(score), True, (255, 255, 255))
+	distanceDisplay = smallText.render("Distance: " + str(distance), True, (255, 255, 255))
 	bCord = smallText.render("Bird Coord: " + str(birdCord[0]) + ", " + str(birdCord[1]), True, (255, 255, 255))
 	gCord = smallText.render("Gap Coord: " + str(gapCord[0]) + ", " + str(gapCord[1]), True, (255, 255, 255))
-	surface.blit(score, [0, 0])
-	surface.blit(distance, [0, 20])
+	fitness = smallText.render("Fitness: " + str(math.ceil(calcFitness(score, distance, birdCord, gapCord))), True, (255, 255, 255))
+	surface.blit(scoreDisplay, [0, 0])
+	surface.blit(distanceDisplay, [0, 20])
 	surface.blit(bCord, [0, 40])
 	surface.blit(gCord, [0, 60])
+	surface.blit(fitness, [0, 80])
+	# surface.blit(gCord, [0, 80])
+	# calcFitness(score, distance, birdCord, gapCord)
+	# print("score: ", type(int(str(score))))
+	# print("distance: ", type(int(str(distance))))
 
 def calcFitness(score, distance, birdCord, gapCord):
-	fitness = score*2 + distance*0.01
+	try:
+		birdAndGapDist = math.sqrt((gapCord[0]-birdCord[0])**2 + (gapCord[1] - birdCord[1]))
+	except:
+		birdAndGapDist = 0.001
+	fitness = (score*2) + (distance*2) + ((1/birdAndGapDist))
+
 	return fitness
 
 

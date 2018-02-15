@@ -8,7 +8,7 @@ class Bird(pygame.sprite.Sprite):
 
         self.surfaceHeight = displayScreen.get_height()
 
-        self.image = pygame.image.load('img/red.png') # image of bird
+        self.image = pygame.image.load('../img/red.png') # image of bird
         # setting initial position of bird
         self.x = 40
         self.y = self.surfaceHeight/2
@@ -23,6 +23,7 @@ class Bird(pygame.sprite.Sprite):
         self.moveUp = -9 # Acceleration upward
         self.isFlapped = False # Did the bird flapped?
         self.distance = 0
+        self.fitness = 0
 
         self.draw(self.x, self.y) # display bird
 
