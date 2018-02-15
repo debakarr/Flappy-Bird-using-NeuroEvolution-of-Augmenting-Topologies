@@ -53,7 +53,12 @@ python Game.py
 ```
 
 ###### NEAT Demo
-![](img/NEATDemo.gif)
+
+**No parent (red bird) alive**
+![](img/NEATDemo2.gif) 
+
+**One or some parent (red bird) alive**
+![](img/NEATDemo3.gif)
 
 ***
 
