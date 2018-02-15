@@ -77,10 +77,14 @@ def replay_or_quit():
 
 # Display on top left
 def topDisplay(surface, score, distance, birdCord, gapCord, genrationCount):
+	global framesPerSecond # using global FPS variable
+
+	# Using system font for now to display things like Gneration, Score, Distance, etc.
 	smallText = pygame.font.SysFont(None, 25)
 	generation = smallText.render("Generation:" + str(genrationCount), True, (255, 255, 255))
 	scoreDisplay = smallText.render("Best Score:" + str(score), True, (255, 255, 255))
 	distanceDisplay = smallText.render("Best Distance:" + str(distance), True, (255, 255, 255))
+	frames = smallText.render("Frames:" + str(framesPerSecond), True, (255, 255, 255))
 	# bCord = smallText.render("Bird Coord:" + str(birdCord[0]) + ", " + str(birdCord[1]), True, (255, 255, 255))
 	# gCord = smallText.render("Gap Coord:" + str(gapCord[0]) + ", " + str(gapCord[1]), True, (255, 255, 255))
 	fitness = smallText.render("Best Fitness:" + str(math.ceil(calcFitness(score, distance, birdCord, gapCord)/100)), True, (255, 255, 255))
@@ -90,6 +94,7 @@ def topDisplay(surface, score, distance, birdCord, gapCord, genrationCount):
 	# surface.blit(bCord, [0, 60])
 	# surface.blit(gCord, [0, 80])
 	surface.blit(fitness, [0, 60])
+	surface.blit(frames, [0, 80])
 	# surface.blit(gCord, [0, 80])
 	# calcFitness(score, distance, birdCord, gapCord)
 	# print("score: ", type(int(str(score))))
@@ -127,8 +132,8 @@ def game(surface):
 	global score
 
 	# Declaring pipe objects	
-	firstPipe = Pipe(surface, surfaceWidth+100)
-	secondPipe = Pipe(surface, surfaceWidth+250)
+	firstPipe = Pipe(surface, surfaceWidth+30)
+	secondPipe = Pipe(surface, surfaceWidth+180)
 
 	# Grouping pipes
 	pipeGroup = pygame.sprite.Group()
@@ -158,9 +163,9 @@ def game(surface):
 				sys.exit()
 
 			if event.type == KEYDOWN and (event.key == K_i): # if '+' is pressed, if yes increase speed
-				framesPerSecond += 20
+				framesPerSecond *= 2
 			if event.type == KEYDOWN and (event.key == K_d):
-				framesPerSecond -= 20
+				framesPerSecond /= 2
 		
 		'''
 			if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_w or event.key == K_UP):
@@ -187,6 +192,8 @@ def game(surface):
 				# time.sleep(5)
 				# game(surface)
 				isAlive = 10 # reset counter
+				firstPipe.setPos(surfaceWidth+30)
+				secondPipe.setPos(surfaceWidth+180)
 				_, genrationCount = birds.nextGen() # make new genration
 
 			birdCord = [bird.x, bird.y] # getting coordinates of bird
