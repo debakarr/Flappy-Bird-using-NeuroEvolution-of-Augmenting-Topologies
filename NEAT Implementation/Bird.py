@@ -65,3 +65,6 @@ class Bird(pygame.sprite.Sprite):
         self.y = max(self.y,0)
         self.distance += 1
         self.draw(self.x,self.y)
+
+    def setImage(self, image):
+        self.image = pygame.image.load(image)
