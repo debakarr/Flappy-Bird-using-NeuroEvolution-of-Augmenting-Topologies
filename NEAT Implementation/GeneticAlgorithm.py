@@ -39,6 +39,9 @@ class Generation:
 		if random.random() <= Constants.mutateChance:
 			child.network.mutate()
 
+		# setting child color yellow 
+		child.setImage('../img/yellow.png')
+
 		# return the new child
 		return child		
 
