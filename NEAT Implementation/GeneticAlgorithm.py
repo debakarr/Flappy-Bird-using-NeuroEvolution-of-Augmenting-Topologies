@@ -35,9 +35,10 @@ class Generation:
 			value2 = [(l['value'], l['index'])  for l in self.birds[bird2].network.edges if l['index'][0] == i]
 
 			if(len(value2)>0):
+				value = value2 if random.random() <= 0.5 else value1
+
 				''' Uncomment this for debug output
 				file = open('text.txt', 'a')
-				value = value2 if random.random() <= 0.5 else value1
 				file.write("\nvalue1: " + str(value1))
 				file.write("\nvalue2:"+ str(value2))
 				file.write("\nvalue:"+ str(value))
