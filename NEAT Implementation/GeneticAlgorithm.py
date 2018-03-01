@@ -31,9 +31,25 @@ class Generation:
 		# in Constant we have set the index of initial node(bias) as 1
 		# this loop just set the value of each node of child to that of the parent
 		for i in range(1, child.network.numberOfNodes + 1):
-			value = [(l['value'], l['index'])  for l in self.birds[bird1].network.edges if l['index'][0] == i]
-			for l in value:
-				child.network.edges.append({'index':[i, value[0][1][1]], 'value':value[0][0]})
+			value1 = [(l['value'], l['index'])  for l in self.birds[bird1].network.edges if l['index'][0] == i]
+			value2 = [(l['value'], l['index'])  for l in self.birds[bird2].network.edges if l['index'][0] == i]
+
+			if(len(value2)>0):
+				''' Uncomment this for debug output
+				file = open('text.txt', 'a')
+				value = value2 if random.random() <= 0.5 else value1
+				file.write("\nvalue1: " + str(value1))
+				file.write("\nvalue2:"+ str(value2))
+				file.write("\nvalue:"+ str(value))
+				file.write("\n\n==========================\n\n")
+				file.close()
+				'''
+				
+				for l in value:
+					child.network.edges.append({'index':[i, value[0][1][1]], 'value':value[0][0]})
+			else:
+				for l in value1:
+					child.network.edges.append({'index':[i, value1[0][1][1]], 'value':value1[0][0]})
 
 		# This is for mutation
 		if random.random() <= Constants.mutateChance:
