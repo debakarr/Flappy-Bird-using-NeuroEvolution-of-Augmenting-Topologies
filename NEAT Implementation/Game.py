@@ -178,10 +178,29 @@ def game(surface):
 			moved = False
 		'''	
 
+		''' Uncomment this for debug output
+		birdCount = 1
+		print("=====================================================")
+		'''
+
 		# Check if birds and pipes are colliding
 		# This part is unoptimized right now. This could be improved more.
 		for bird in birds.birds: # Loop through all birds
 			colide = (pygame.sprite.spritecollideany(bird,pipeGroup)) # Check if collide
+
+			''' Uncomment this for debug output
+			print("Generation: ", genrationCount)
+			print("Nodes:", bird.network.nodes)
+			print("Edges:", bird.network.edges)
+			print("Bird No.:", birdCount)
+			print()
+
+			birdCount += 1
+
+			if birdCount == 10:
+				birdCount = 1
+			'''
+
 			if colide != None or (bird.y == 509 - bird.height) or (bird.y == 0): # if collide or touch the top or bottom of the screen
 				bird.isAlive = False # set isAlive attribute to False
 				isAlive -= 1 # decrement isAlive count
